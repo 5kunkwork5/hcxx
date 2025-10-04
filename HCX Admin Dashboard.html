@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - HeavenlyCreaturesX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6D28D9',
+                        secondary: '#FBBF24',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        heading: ['Playfair Display', 'serif'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .admin-card {
+            transition: all 0.3s ease;
+        }
+        .admin-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .user-row:hover {
+            background-color: #F9FAFB;
+        }
+        .upload-area {
+            border: 2px dashed #D1D5DB;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #6D28D9;
+            background-color: #F5F3FF;
+        }
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #E5E7EB;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #6D28D9;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-light font-body text-dark">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between">
+                    <a href="index.html" class="text-2xl font-heading font-bold text-primary flex items-center">
+                        <i data-feather="image" class="mr-2"></i>
+                        HeavenlyCreaturesX
+                    </a>
+                    <button id="mobile-menu-button" class="md:hidden text-dark">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+                <nav id="mobile-menu" class="hidden md:flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-8 mt-4 md:mt-0">
+                    <a href="index.html" class="hover:text-primary transition">Gallery</a>
+                    <a href="index.html" class="hover:text-primary transition">Artists</a>
+                    <a href="index.html" class="hover:text-primary transition">Categories</a>
+                    <a href="nft-gallery.html" class="hover:text-primary transition">NFTs</a>
+                    <a href="fulfillment.html" class="hover:text-primary transition">Prints</a>
+                    <a href="index.html" class="hover:text-primary transition">About</a>
+                </nav>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i data-feather="search"></i>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i data-feather="bell"></i>
+                    </button>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition flex items-center">
+                        <i data-feather="user" class="mr-2"></i>
+                        <a href="dashboard.html">Admin</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <h1 class="text-3xl font-heading font-bold">Admin Dashboard</h1>
+                    <div class="flex items-center mt-4 md:mt-0">
+                        <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                            <img src="http://static.photos/people/200x200/60" alt="Admin" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <p class="font-medium">Admin User</p>
+                            <p class="text-gray-500 text-sm">Super Administrator</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 mb-1">Total Revenue</p>
+                                <p class="text-2xl font-bold">$12,458.32</p>
+                                <p class="text-green-500 text-sm flex items-center mt-1">
+                                    <i data-feather="trending-up" class="mr-1"></i>
+                                    12.4% this month
+                                </p>
+                            </div>
+                            <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                <i data-feather="dollar-sign" class="text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 mb-1">Total Users</p>
+                                <p class="text-2xl font-bold">3,842</p>
+                                <p class="text-green-500 text-sm flex items-center mt-1">
+                                    <i data-feather="trending-up" class="mr-1"></i>
+                                    4.2% this month
+                                </p>
+                            </div>
+                            <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                <i data-feather="users" class="text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 mb-1">Artworks</p>
+                                <p class="text-2xl font-bold">12,458</p>
+                                <p class="text-green-500 text-sm flex items-center mt-1">
+                                    <i data-feather="trending-up" class="mr-1"></i>
+                                    8.7% this month
+                                </p>
+                            </div>
+                            <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                <i data-feather="image" class="text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 mb-1">Pending Reviews</p>
+                                <p class="text-2xl font-bold">24</p>
+                                <p class="text-yellow-500 text-sm flex items-center mt-1">
+                                    <i data-feather="alert-circle" class="mr-1"></i>
+                                    3 urgent
+                                </p>
+                            </div>
+                            <div class="bg-yellow-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                <i data-feather="clock" class="text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-2">
+                        <!-- Content Management -->
+                        <div class="admin-card bg-white rounded-xl shadow-md p-6 mb-8">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-heading font-bold">Content Management</h2>
+                                <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition">
+                                    Add New
+                                </button>
+                            </div>
+                            
+                            <!-- Bulk Upload -->
+                            <div class="mb-8">
+                                <h3 class="font-bold text-lg mb-4">Bulk Upload Artworks</h3>
+                                <div class="upload-area rounded-lg p-8 text-center cursor-pointer" onclick="document.getElementById('file-upload').click()">
+                                    <i data-feather="upload" class="mx-auto text-gray-400 mb-3"></i>
+                                    <p class="font-medium mb-1">Drag & drop files here</p>
+                                    <p class="text-gray-500 text-sm mb-4">or click to browse</p>
+                                    <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition">
+                                        Select Files
+                                    </button>
+                                    <input type="file" id="file-upload" class="hidden" multiple>
+                                </div>
+                                
+                                <!-- Upload Progress -->
+                                <div class="mt-4 hidden" id="upload-progress">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700">Uploading 5 files...</span>
+                                        <span class="text-gray-500">60%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Featured Artworks -->
+                            <div>
+                                <h3 class="font-bold text-lg mb-4">Featured Artworks</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr class="border-b">
+                                                <th class="text-left py-3 px-4">Artwork</th>
+                                                <th class="text-left py-3 px-4">Artist</th>
+                                                <th class="text-left py-3 px-4">Category</th>
+                                                <th class="text-right py-3 px-4">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b user-row">
+                                                <td class="py-4 px-4">
+                                                    <div class="flex items-center">
+                                                        <div class="w-10 h-10 rounded-lg overflow-hidden mr-3">
+                                                            <img src="http://static.photos/art/200x200/1" alt="Artwork" class="w-full h-full object-cover">
+                                                        </div>
+                                                        <div>
+                                                            <div class="font-medium">Cosmic Dreams</div>
+                                                            <div class="text-gray-500 text-sm">#1245</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="py-4 px-4">Alex Morgan</td>
+                                                <td class="py-4 px-4">
+                                                    <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Digital Art</span>
+                                                </td>
+                                                <td class="py-4 px-4 text-right">
+                                                    <button class="text-gray-500 hover:text-primary mr-3">
+                                                        <i data-feather="edit-2"></i>
+                                                    </button>
+                                                    <button class="text-gray-500 hover:text-red-500">
+                                                        <i data-feather="trash-2"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-b user-row">
+                                                <td class="py-4 px-4">
+                                                    <div class="flex items-center">
+                                                        <div class="w-10 h-10 rounded-lg overflow-hidden mr-3">
+                                                            <img src="http://static.photos/abstract/200x200/2" alt="Artwork" class="w-full h-full object-cover">
+                                                        </div>
+                                                        <div>
+                                                            <div class="font-medium">Urban Jungle</div>
+                                                            <div class="text-gray-500 text-sm">#0876</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="py-4 px-4">Jamie Smith</td>
+                                                <td class="py-4 px-4">
+                                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Abstract</span>
+                                                </td>
+                                                <td class="py-4 px-4 text-right">
+                                                    <button class="text-gray-500 hover:text-primary mr-3">
+                                                        <i data-feather="edit-2"></i>
+                                                    </button>
+                                                    <button class="text-gray-500 hover:text-red-500">
+                                                        <i data-feather="trash-2"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-b user-row">
+                                                <td class="py-4 px-4">
+                                                    <div class="flex items-center">
+                                                        <div class="w-10 h-10 rounded-lg overflow-hidden mr-3">
+                                                            <img src="http://static.photos/nature/200x200/3" alt="Artwork" class="w-full h-full object-cover">
+                                                        </div>
+                                                        <div>
+                                                            <div class="font-medium">Mountain Serenity</div>
+                                                            <div class="text-gray-500 text-sm">#2034</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="py-4 px-4">Taylor Reed</td>
+                                                <td class="py-4 px-4">
+                                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Nature</span>
+                                                </td>
+                                                <td class="py-4 px-4 text-right">
+                                                    <button class="text-gray-500 hover:text-primary mr-3">
+                                                        <i data-feather="edit-2"></i>
+                                                    </button>
+                                                    <button class="text-gray-500 hover:text-red-500">
+                                                        <i data-feather="trash-2"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sales Analytics -->
+                        <div class="admin-card bg-white rounded-xl shadow-md p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-heading font-bold">Sales Analytics</h2>
+                                <select class="border border-gray-300 rounded-lg px-3 py-1 text-sm">
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                    <option>Last 90 Days</option>
+                                </select>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <h3 class="font-bold mb-3">Revenue by Category</h3>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between mb-1">
+                                                <span class="text-gray-600">Digital Art</span>
+                                                <span class="font-medium">$4,250.00</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 75%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-1">
+                                                <span class="text-gray-600">NFTs</span>
+                                                <span class="font-medium">$3,800.00</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 68%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-1">
+                                                <span class="text-gray-600">Prints</span>
+                                                <span class="font-medium">$2,150.00</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 38%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="font-bold mb-3">Top Performing Artists</h3>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                                                <img src="http://static.photos/people/200x200/10" alt="Artist" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="font-medium">Alex Morgan</div>
+                                                <div class="text-gray-500 text-sm">$2,450.00</div>
+                                            </div>
+                                            <div class="text-green-500 font-medium">+12.4%</div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                                                <img src="http://static.photos/people/200x200/15" alt="Artist" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="font-medium">Jamie Smith</div>
+                                                <div class="text-gray-500 text-sm">$1,890.00</div>
+                                            </div>
+                                            <div class="text-green-500 font-medium">+8.2%</div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                                                <img src="http://static.photos/people/200x200/20" alt="Artist" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="font-medium">Taylor Reed</div>
+                                                <div class="text-gray-500 text-sm">$1,650.00</div>
+                                            </div>
+                                            <div class="text-green-500 font-medium">+5.7%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-6 border-t border-gray-200">
+                                <button class="text-primary font-medium hover:underline flex items-center">
+                                    <i data-feather="bar-chart-2" class="mr-2"></i>
+                                    View Detailed Analytics
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div>
+                        <!-- User Management -->
+                        <div class="admin-card bg-white rounded-xl shadow-md p-6 mb-8">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-heading font-bold">User Management</h2>
+                                <button class="bg-primary text-white px-3 py-1 rounded-lg text-sm hover:bg-purple-700 transition">
+                                    <i data-feather="plus"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="relative">
+                                    <input type="text" placeholder="Search users..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary pl-10">
+                                    <i data-feather="search" class="absolute left-3 top-2.5 text-gray-400"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="user-row border border-gray-200 rounded-lg p-4 flex items-center">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                                        <img src="http://static.photos/people/200x200/30" alt="User" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="flex-grow">
+                                        <div class="font-medium">Sarah Johnson</div>
+                                        <div class="text-gray-500 text-sm">sarah@example.com</div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary">
+                                            <i data-feather="edit-2"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500">
+                                            <i data-feather="trash-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="user-row border border-gray-200 rounded-lg p-4 flex items-center">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                                        <img src="http://static.photos/people/200x200/35" alt="User" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="flex-grow">
+                                        <div class="font-medium">Michael Chen</div>
+                                        <div class="text-gray-500 text-sm">michael@example.com</div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary">
+                                            <i data-feather="edit-2"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500">
+                                            <i data-feather="trash-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="user-row border border-gray-200 rounded-lg p-4 flex items-center">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                                        <img src="http://static.photos/people/200x200/40" alt="User" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="flex-grow">
+                                        <div class="font-medium">Emma Rodriguez</div>
+                                        <div class="text-gray-500 text-sm">emma@example.com</div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary">
+                                            <i data-feather="edit-2"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500">
+                                            <i data-feather="trash-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-200">
+                                <button class="w-full bg-gray-100 text-gray-700 py-2 rounded-lg text-sm hover:bg-gray-200 transition">
+                                    View All Users
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Content Moderation -->
+                        <div class="admin-card bg-white rounded-xl shadow-md p-6 mb-8">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-heading font-bold">Content Moderation</h2>
+                                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">24 pending</span>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex justify-between mb-3">
+                                        <div class="font-medium">New Artwork Submission</div>
+                                        <span class="text-yellow-500 text-sm">Pending</span>
+                                    </div>
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-12 h-12 rounded-lg overflow-hidden mr-3">
+                                            <img src="http://static.photos/art/200x200/4" alt="Submission" class="w-full h-full object-cover">
+                                        </div>
+                                        <div>
+                                            <div class="text-sm">Title: "Ocean Waves"</div>
+                                            <div class="text-gray-500 text-xs">by Jordan Lee</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition">
+                                            Approve
+                                        </button>
+                                        <button class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition">
+                                            Reject
+                                        </button>
+                                        <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300 transition">
+                                            Review
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex justify-between mb-3">
+                                        <div class="font-medium">User Report</div>
+                                        <span class="text-red-500 text-sm">Urgent</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-sm">Reported Content: "Mountain Landscape"</div>
+                                        <div class="text-gray-500 text-xs">Reason: Copyright Infringement</div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition">
+                                            Resolve
+                                        </button>
+                                        <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300 transition">
+                                            Investigate
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-200">
+                                <button class="w-full bg-gray-100 text-gray-700 py-2 rounded-lg text-sm hover:bg-gray-200 transition">
+                                    View All Reports
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- SEO Optimization -->
+                        <div class="admin-card bg-white rounded-xl shadow-md p-6">
+                            <h2 class="text-2xl font-heading font-bold mb-6">SEO Optimization</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Meta Title</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="Digital Art Emporium - Unique Digital Artwork">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Meta Description</label>
+                                    <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" rows="3">Discover and purchase unique digital artwork from talented artists around the world. High-quality digital prints, NFTs, and exclusive collections.</textarea>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Keywords</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="digital art, NFT, artwork, prints, artists, collectors">
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 flex space-x-3">
+                                <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                                    Save Changes
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition">
+                                    Preview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="text-2xl font-heading font-bold mb-4 flex items-center">
+                        <i data-feather="image" class="mr-2"></i>
+                        ArtEmporium
+                    </h3>
+                    <p class="text-gray-400 mb-4">Discover and purchase unique digital artwork from talented artists around the world.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">For Artists</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Sell Your Art</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Artist Resources</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Community</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">For Collectors</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition">Browse Artwork</a></li>
+                        <li><a href="nft-gallery.html" class="text-gray-400 hover:text-white transition">NFT Gallery</a></li>
+                        <li><a href="fulfillment.html" class="text-gray-400 hover:text-white transition">Print Fulfillment</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Subscribe to get updates on new artwork and artists</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 w-full rounded-l-lg focus:outline-none text-dark">
+                        <button class="bg-primary px-4 py-2 rounded-r-lg hover:bg-purple-700 transition">
+                            <i data-feather="send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400">
+                <p>&copy; 2023 Digital Art Emporium. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Simulate file upload
+        document.getElementById('file-upload').addEventListener('change', function() {
+            const uploadProgress = document.getElementById('upload-progress');
+            uploadProgress.classList.remove('hidden');
+            
+            // Simulate upload progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                document.querySelector('.progress-fill').style.width = `${progress}%`;
+                document.querySelector('#upload-progress .text-gray-500').textContent = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        uploadProgress.classList.add('hidden');
+                        alert('Files uploaded successfully!');
+                    }, 500);
+                }
+            }, 200);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Art Emporium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6D28D9',
+                        secondary: '#FBBF24',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        heading: ['Playfair Display', 'serif'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .zoom-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .zoom-container img {
+            transition: transform 0.5s ease;
+        }
+        .zoom-container:hover img {
+            transform: scale(1.1);
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+            pointer-events: none;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .artist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .review-card {
+            transition: all 0.3s ease;
+        }
+        .review-card:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-light font-body text-dark">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="text-2xl font-heading font-bold text-primary flex items-center">
+                        <i data-feather="image" class="mr-2"></i>
+                        HeavenlyCreaturesX
+                    </a>
+                    <button id="mobile-menu-button" class="md:hidden text-dark">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+                <nav id="mobile-menu" class="hidden md:flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-8 mt-4 md:mt-0">
+                    <a href="#" class="text-primary font-medium">Gallery</a>
+                    <a href="#" class="hover:text-primary transition">Artists</a>
+                    <a href="#" class="hover:text-primary transition">Categories</a>
+                    <a href="nft-gallery.html" class="hover:text-primary transition">NFTs</a>
+                    <a href="fulfillment.html" class="hover:text-primary transition">Prints</a>
+                    <a href="#" class="hover:text-primary transition">About</a>
+                </nav>
+<div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+<i data-feather="search"></i>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i data-feather="heart"></i>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-gray-100 relative">
+                        <i data-feather="shopping-cart"></i>
+                        <span class="absolute top-0 right-0 bg-secondary text-dark text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition flex items-center">
+                        <i data-feather="user" class="mr-2"></i>
+                        <a href="dashboard.html">Dashboard</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+</header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-primary to-purple-800 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-heading font-bold mb-6">Discover Extraordinary Digital Art</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Explore unique digital masterpieces from talented artists around the world</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-secondary text-dark px-8 py-3 rounded-lg font-medium hover:bg-yellow-300 transition flex items-center justify-center">
+                    <i data-feather="shopping-bag" class="mr-2"></i>
+                    Browse Gallery
+                </button>
+                <button class="bg-transparent border-2 border-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-primary transition flex items-center justify-center">
+                    <i data-feather="users" class="mr-2"></i>
+                    Meet Artists
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-heading font-bold text-center mb-12">Explore Categories</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-gray-100 rounded-xl p-6 text-center hover:bg-primary hover:text-white transition cursor-pointer">
+                    <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
+                        <i data-feather="landscape"></i>
+                    </div>
+                    <h3 class="font-semibold">Landscapes</h3>
+                </div>
+                <div class="bg-gray-100 rounded-xl p-6 text-center hover:bg-primary hover:text-white transition cursor-pointer">
+                    <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
+                        <i data-feather="smile"></i>
+                    </div>
+                    <h3 class="font-semibold">Portraits</h3>
+                </div>
+                <div class="bg-gray-100 rounded-xl p-6 text-center hover:bg-primary hover:text-white transition cursor-pointer">
+                    <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
+                        <i data-feather="aperture"></i>
+                    </div>
+                    <h3 class="font-semibold">Abstract</h3>
+                </div>
+                <div class="bg-gray-100 rounded-xl p-6 text-center hover:bg-primary hover:text-white transition cursor-pointer">
+                    <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
+                        <i data-feather="star"></i>
+                    </div>
+                    <h3 class="font-semibold">Fantasy</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Artworks -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-3xl font-heading font-bold">Featured Artworks</h2>
+                <a href="#" class="text-primary font-medium hover:underline">View All</a>
+            </div>
+            
+            <div class="art-grid">
+                <!-- Artwork 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+                    <div class="zoom-container relative">
+                        <img src="http://static.photos/art/320x240/1" alt="Digital Artwork" class="w-full h-64 object-cover">
+                        <div class="watermark">PREVIEW</div>
+                        <div class="absolute top-4 right-4 bg-secondary text-dark text-xs font-bold px-2 py-1 rounded">
+                            NEW
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg">Cosmic Dreams</h3>
+                                <p class="text-gray-500 text-sm">by Alex Morgan</p>
+                            </div>
+                            <span class="bg-primary text-white text-sm font-bold px-2 py-1 rounded">$49</span>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-2">(24)</span>
+                            </div>
+                            <button class="text-gray-400 hover:text-primary">
+                                <i data-feather="heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Artwork 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+                    <div class="zoom-container relative">
+                        <img src="http://static.photos/abstract/320x240/2" alt="Digital Artwork" class="w-full h-64 object-cover">
+                        <div class="watermark">PREVIEW</div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg">Urban Jungle</h3>
+                                <p class="text-gray-500 text-sm">by Jamie Smith</p>
+                            </div>
+                            <span class="bg-primary text-white text-sm font-bold px-2 py-1 rounded">$35</span>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-2">(42)</span>
+                            </div>
+                            <button class="text-gray-400 hover:text-primary">
+                                <i data-feather="heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Artwork 3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+                    <div class="zoom-container relative">
+                        <img src="http://static.photos/nature/320x240/3" alt="Digital Artwork" class="w-full h-64 object-cover">
+                        <div class="watermark">PREVIEW</div>
+                        <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            SALE
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg">Mountain Serenity</h3>
+                                <p class="text-gray-500 text-sm">by Taylor Reed</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 text-sm line-through mr-2">$59</span>
+                                <span class="bg-primary text-white text-sm font-bold px-2 py-1 rounded">$45</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star"></i>
+                                    <i data-feather="star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-2">(18)</span>
+                            </div>
+                            <button class="text-gray-400 hover:text-primary">
+                                <i data-feather="heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Artwork 4 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+                    <div class="zoom-container relative">
+                        <img src="http://static.photos/people/320x240/4" alt="Digital Artwork" class="w-full h-64 object-cover">
+                        <div class="watermark">PREVIEW</div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg">Portrait of Hope</h3>
+                                <p class="text-gray-500 text-sm">by Morgan Lee</p>
+                            </div>
+                            <span class="bg-primary text-white text-sm font-bold px-2 py-1 rounded">$65</span>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                    <i data-feather="star" class="fill-current"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-2">(37)</span>
+                            </div>
+                            <button class="text-gray-400 hover:text-primary">
+                                <i data-feather="heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Artists -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-3xl font-heading font-bold">Featured Artists</h2>
+                <a href="#" class="text-primary font-medium hover:underline">View All</a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Artist 1 -->
+                <div class="artist-card bg-gray-50 rounded-xl p-6 text-center transition">
+                    <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-white shadow">
+                        <img src="http://static.photos/people/200x200/10" alt="Artist" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-lg">Alex Morgan</h3>
+                    <p class="text-gray-500 text-sm mb-3">Digital Illustrator</p>
+                    <div class="flex justify-center text-yellow-400 mb-3">
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star"></i>
+                        <span class="text-gray-500 text-sm ml-2">(128)</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Creating surreal digital landscapes that transport viewers to otherworldly realms.</p>
+                    <button class="w-full bg-primary text-white py-2 rounded-lg hover:bg-purple-700 transition">
+                        View Portfolio
+                    </button>
+                </div>
+                
+                <!-- Artist 2 -->
+                <div class="artist-card bg-gray-50 rounded-xl p-6 text-center transition">
+                    <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-white shadow">
+                        <img src="http://static.photos/people/200x200/15" alt="Artist" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-lg">Jamie Smith</h3>
+                    <p class="text-gray-500 text-sm mb-3">Concept Artist</p>
+                    <div class="flex justify-center text-yellow-400 mb-3">
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <span class="text-gray-500 text-sm ml-2">(97)</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Specializing in vibrant abstract compositions that evoke emotion through color and form.</p>
+                    <button class="w-full bg-primary text-white py-2 rounded-lg hover:bg-purple-700 transition">
+                        View Portfolio
+                    </button>
+                </div>
+                
+                <!-- Artist 3 -->
+                <div class="artist-card bg-gray-50 rounded-xl p-6 text-center transition">
+                    <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-white shadow">
+                        <img src="http://static.photos/people/200x200/20" alt="Artist" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-lg">Taylor Reed</h3>
+                    <p class="text-gray-500 text-sm mb-3">Fantasy Illustrator</p>
+                    <div class="flex justify-center text-yellow-400 mb-3">
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star"></i>
+                        <i data-feather="star"></i>
+                        <span class="text-gray-500 text-sm ml-2">(84)</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Bringing mythical creatures and enchanted worlds to life through detailed digital painting.</p>
+                    <button class="w-full bg-primary text-white py-2 rounded-lg hover:bg-purple-700 transition">
+                        View Portfolio
+                    </button>
+                </div>
+                
+                <!-- Artist 4 -->
+                <div class="artist-card bg-gray-50 rounded-xl p-6 text-center transition">
+                    <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-white shadow">
+                        <img src="http://static.photos/people/200x200/25" alt="Artist" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-lg">Morgan Lee</h3>
+                    <p class="text-gray-500 text-sm mb-3">Portrait Specialist</p>
+                    <div class="flex justify-center text-yellow-400 mb-3">
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <span class="text-gray-500 text-sm ml-2">(156)</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Capturing the essence and emotion of subjects through expressive digital portraiture.</p>
+                    <button class="w-full bg-primary text-white py-2 rounded-lg hover:bg-purple-700 transition">
+                        View Portfolio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Reviews -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-heading font-bold text-center mb-12">What Our Customers Say</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="review-card bg-white rounded-xl p-6 shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The quality of the digital artwork I purchased exceeded my expectations. The download was instant and the file quality was perfect for printing."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="http://static.photos/people/200x200/30" alt="Customer" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Sarah Johnson</h4>
+                            <p class="text-gray-500 text-sm">Art Collector</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review 2 -->
+                <div class="review-card bg-white rounded-xl p-6 shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"As an artist, I appreciate the platform's support for creators. The commission structure is fair and the community is very engaged with our work."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="http://static.photos/people/200x200/35" alt="Customer" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Michael Chen</h4>
+                            <p class="text-gray-500 text-sm">Digital Artist</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review 3 -->
+                <div class="review-card bg-white rounded-xl p-6 shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                        <i data-feather="star" class="fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"Finding unique artwork for my home has never been easier. The preview watermarks are a great way to see the composition before purchasing."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="http://static.photos/people/200x200/40" alt="Customer" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Emma Rodriguez</h4>
+                            <p class="text-gray-500 text-sm">Interior Designer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-primary to-purple-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6">Start Your Digital Art Journey</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Join thousands of artists and collectors in our vibrant community</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-secondary text-dark px-8 py-3 rounded-lg font-medium hover:bg-yellow-300 transition">
+                    Become an Artist
+                </button>
+                <button class="bg-transparent border-2 border-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-primary transition">
+                    Browse Artwork
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="text-2xl font-heading font-bold mb-4 flex items-center">
+                        <i data-feather="image" class="mr-2"></i>
+                        ArtEmporium
+                    </h3>
+                    <p class="text-gray-400 mb-4">Discover and purchase unique digital artwork from talented artists around the world.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">For Artists</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Sell Your Art</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Artist Resources</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Community</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">For Collectors</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Browse Artwork</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Gift Cards</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Licensing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Subscribe to get updates on new artwork and artists</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 w-full rounded-l-lg focus:outline-none text-dark">
+                        <button class="bg-primary px-4 py-2 rounded-r-lg hover:bg-purple-700 transition">
+                            <i data-feather="send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400">
+                <p>&copy; 2023 Digital Art Emporium. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Simple zoom effect for images
+        document.querySelectorAll('.zoom-container').forEach(container => {
+            const img = container.querySelector('img');
+            container.addEventListener('mouseenter', () => {
+                img.style.transform = 'scale(1.1)';
+            });
+            container.addEventListener('mouseleave', () => {
+                img.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
